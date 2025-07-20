@@ -80,6 +80,18 @@
             z-index: 1;
         }
         
+        /* Cake Styles (candle removed) */
+        #cake {
+            display: none;
+            font-size: 150px;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 5;
+            animation: cakeBounce 2s infinite;
+        }
+        
         @keyframes bounce {
             0%,
             100% {
@@ -117,6 +129,15 @@
                 transform: translateY(0);
             }
         }
+        
+        @keyframes cakeBounce {
+            0%, 100% {
+                transform: translate(-50%, -50%) scale(1);
+            }
+            50% {
+                transform: translate(-50%, -50%) scale(1.05);
+            }
+        }
     </style>
 </head>
 
@@ -124,6 +145,8 @@
     <div id="container">
         <div id="letter" onclick="showBirthdayMessage()">💌</div>
         <div id="letter-text">Click to open the letter!</div>
+
+        <div id="cake">🎂</div> <!-- Candle removed -->
 
         <div id="birthday-message"></div>
         <div id="love-message">I Always Love You ❤️</div>
@@ -138,13 +161,28 @@
         function showBirthdayMessage() {
             document.getElementById('letter').style.display = 'none';
             document.getElementById('letter-text').style.display = 'none';
-            document.getElementById('birthday-message').style.display = 'block';
             document.body.style.backgroundColor = '#fff5f7';
 
+            // Show cake first
+            showCake();
+        }
+
+        function showCake() {
+            const cake = document.getElementById('cake');
+            cake.style.display = 'block';
+            
             // Start floating hearts
             startHearts();
+            
+            // After 3 seconds, hide cake and show messages
+            setTimeout(() => {
+                cake.style.display = 'none';
+                showMessages();
+            }, 3000);
+        }
 
-            // Show words one by one
+        function showMessages() {
+            document.getElementById('birthday-message').style.display = 'block';
             showWordsSequentially();
         }
 
@@ -209,6 +247,7 @@
             // Reset all elements
             document.getElementById('letter').style.display = 'block';
             document.getElementById('letter-text').style.display = 'block';
+            document.getElementById('cake').style.display = 'none';
             document.getElementById('birthday-message').style.display = 'none';
             document.getElementById('birthday-message').innerHTML = '';
             document.getElementById('love-message').style.display = 'none';
